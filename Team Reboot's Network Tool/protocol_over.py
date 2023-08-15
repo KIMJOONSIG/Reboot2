@@ -1,23 +1,40 @@
-from scapy.all import sniff, IP, TCP
+from scapy.all import sniff, IP, TCP, UDP
 import time
 import threading
 import sys
 
 # 패킷 캡처 및 지연 시간, 패킷 크기, 프로토콜, 세션 정보 출력
+
 def packet_callback(packet):
-    if IP in packet:
+    if packet.haslayer(IP):
         timestamp = time.time()
         packet_size = len(packet)
         protocol = packet[IP].proto
         protocol_name = packet[IP].sprintf("%IP.proto%")
         src_ip = packet[IP].src
         dst_ip = packet[IP].dst
-        src_port = packet[IP].sport
-        dst_port = packet[IP].dport
-
+        
         seq_num = 0
+        tcp_flags = None
+        udp_length = None
+        
         if TCP in packet:
             seq_num = packet[TCP].seq
+            tcp_flags = packet[TCP].flags
+        elif UDP in packet:
+            udp_length = packet[UDP].len
+        
+        # TCP 플래그 확인 및 표시
+        flag_desc = ""
+        if tcp_flags is not None:
+            if tcp_flags.A:
+                flag_desc += "ACK "
+            if tcp_flags.F:
+                flag_desc += "FIN "
+            if tcp_flags.S:
+                flag_desc += "SYN "
+            if tcp_flags.R:
+                flag_desc += "RST "
         
         # 비정상적인 패킷 판별 조건을 추가 (ICMP 프로토콜)
         is_protocol_abnormal = False
@@ -38,10 +55,20 @@ def packet_callback(packet):
             color = "\033[0m"   # 기본색
         
         print(f"{color}Timestamp: {timestamp:.6f}, Packet Size: {packet_size} bytes, Protocol: {protocol_name}")
-        print(f"Source IP: {src_ip}, Source Port: {src_port}, Destination IP: {dst_ip}, Destination Port: {dst_port}")
-        print(f"Sequence Number: {seq_num}")
+        print(f"Source IP: {src_ip}, Destination IP: {dst_ip}")
+        if protocol == 6 or protocol == 17:  # TCP 또는 UDP 프로토콜일 때만 출력
+            src_port = packet[IP].sport
+            dst_port = packet[IP].dport
+            print(f"Source Port: {src_port}, Destination Port: {dst_port}")
+            if seq_num != 0:
+                print(f"Sequence Number: {seq_num}")
+            if flag_desc != "":
+                print(f"TCP Flags: {flag_desc}")
+            if udp_length is not None:
+                print(f"UDP Length: {udp_length}")  # UDP 패킷 길이 출력
         print("-" * 50)
         print("\033[0m")  # 기본색으로 리셋
+
 
 # 엔터 키를 누를 때 프로그램을 종료하는 함수
 def stop_capture():
