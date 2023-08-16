@@ -36,7 +36,7 @@ def packet_callback(packet):
             if tcp_flags.R:
                 flag_desc += "RST "
         
-        # 비정상적인 패킷 판별 조건을 추가 (ICMP 프로토콜)
+        # 비정상적인 패킷 판별 조건을 추가 (ICMP 프로토콜
         is_protocol_abnormal = False
         if protocol == 1:  # ICMP 프로토콜인 경우 (예시)
             is_protocol_abnormal = True
