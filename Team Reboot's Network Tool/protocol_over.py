@@ -10,8 +10,8 @@ packet_count = defaultdict(int)
 packet_last_time = defaultdict(float)
 
 # 연속 접속 시도 임곗값 및 기간 설정
-THRESHOLD = 10  # 임곗값
-DURATION = 5  # 기간 (초)
+THRESHOLD = 10  # 임곗값(연속 접속 시도 횟수 임계값)
+DURATION = 5  # 기간 (연속 접속 시도 감지 기간) (초)
 
 # 패킷 콜백 함수
 def packet_callback(packet):
