@@ -1,30 +1,44 @@
+#sudo 명령어를 사용하여 파일 실행(ex. sudo python3 protocol_over.py)
+from collections import defaultdict
 from scapy.all import sniff, IP, TCP, UDP
 import time
 import threading
 import sys
 
-# 패킷 캡처 및 지연 시간, 패킷 크기, 프로토콜, 세션 정보 출력
+# 패킷 소스 IP 별 카운트 및 마지막 기록 시간 저장
+packet_count = defaultdict(int)
+packet_last_time = defaultdict(float)
 
+# 연속 접속 시도 임곗값 및 기간 설정
+THRESHOLD = 10  # 임곗값
+DURATION = 5  # 기간 (초)
+
+# 패킷 콜백 함수
 def packet_callback(packet):
+    global packet_count, packet_last_time
+    
+    # 패킷에 IP 계층이 있으면
     if packet.haslayer(IP):
-        timestamp = time.time()
-        packet_size = len(packet)
-        protocol = packet[IP].proto
-        protocol_name = packet[IP].sprintf("%IP.proto%")
-        src_ip = packet[IP].src
-        dst_ip = packet[IP].dst
-        
+        timestamp = time.time()  # 현재 시간
+        packet_size = len(packet)  # 패킷 크기
+        protocol = packet[IP].proto  # 프로토콜 번호
+        protocol_name = packet[IP].sprintf("%IP.proto%")  # 프로토콜 이름
+        src_ip = packet[IP].src  # 소스 IP
+        dst_ip = packet[IP].dst  # 목적지 IP
+
         seq_num = 0
         tcp_flags = None
         udp_length = None
         
+        # TCP 계층이 있으면
         if TCP in packet:
-            seq_num = packet[TCP].seq
-            tcp_flags = packet[TCP].flags
+            seq_num = packet[TCP].seq  # 시퀀스 번호
+            tcp_flags = packet[TCP].flags  # TCP 플래그
+        # UDP 계층이 있으면
         elif UDP in packet:
-            udp_length = packet[UDP].len
+            udp_length = packet[UDP].len  # UDP 길이
         
-        # TCP 플래그 확인 및 표시
+        # TCP 플래그 설명
         flag_desc = ""
         if tcp_flags is not None:
             if tcp_flags.A:
@@ -36,27 +50,39 @@ def packet_callback(packet):
             if tcp_flags.R:
                 flag_desc += "RST "
         
-        # 비정상적인 패킷 판별 조건을 추가 (ICMP 프로토콜
+        # 비정상 패킷 판별
         is_protocol_abnormal = False
         if protocol == 1:  # ICMP 프로토콜인 경우 (예시)
             is_protocol_abnormal = True
         
-        # 비정상적인 패킷 판별 조건을 추가 (패킷 크기)
+        # 비정상 패킷 크기 판별
         is_size_abnormal = False
-        if packet_size > 1500:  # 예: 패킷 크기가 1500 바이트를 초과하는 경우 비정상으로 판별
+        if packet_size > 1500:  # 패킷 크기가 1500 바이트를 초과하는 경우
             is_size_abnormal = True
+        
+        # IP 주소별로 패킷 카운트 및 마지막 시간 기록
+        if (timestamp - packet_last_time[src_ip]) > DURATION:
+            packet_count[src_ip] = 0
+            packet_last_time[src_ip] = timestamp
+        
+        packet_count[src_ip] += 1
+        
+        # 패킷 카운트가 임곗값을 초과하면 경고 출력
+        if packet_count[src_ip] > THRESHOLD:
+            print(f"\033[91m경고: {src_ip}로부터 빈번한 연결 시도가 감지되었습니다.\033[0m")
         
         # 색상 선택
         if is_protocol_abnormal:
-            color = "\033[91m"  # 빨간색
+            color = "\033[91m"
         elif is_size_abnormal:
-            color = "\033[93m"  # 노란색
+            color = "\033[93m"
         else:
-            color = "\033[0m"   # 기본색
+            color = "\033[0m"
         
+        # 패킷 정보 출력
         print(f"{color}Timestamp: {timestamp:.6f}, Packet Size: {packet_size} bytes, Protocol: {protocol_name}")
         print(f"Source IP: {src_ip}, Destination IP: {dst_ip}")
-        if protocol == 6 or protocol == 17:  # TCP 또는 UDP 프로토콜일 때만 출력
+        if protocol == 6 or protocol == 17:
             src_port = packet[IP].sport
             dst_port = packet[IP].dport
             print(f"Source Port: {src_port}, Destination Port: {dst_port}")
@@ -65,16 +91,15 @@ def packet_callback(packet):
             if flag_desc != "":
                 print(f"TCP Flags: {flag_desc}")
             if udp_length is not None:
-                print(f"UDP Length: {udp_length}")  # UDP 패킷 길이 출력
+                print(f"UDP Length: {udp_length}")
         print("-" * 50)
-        print("\033[0m")  # 기본색으로 리셋
+        print("\033[0m")
 
-
-# 엔터 키를 누를 때 프로그램을 종료하는 함수
+# 패킷 캡처 종료 함수
 def stop_capture():
     print("Press Enter to stop capturing...")
-    input()  # 엔터 키를 대기
-    sys.exit(0)  # 프로그램 종료
+    input()
+    sys.exit(0)
 
 # 패킷 캡처 및 종료 스레드 시작
 capture_thread = threading.Thread(target=lambda: sniff(filter="ip", prn=packet_callback), daemon=True)
@@ -84,6 +109,7 @@ stop_thread = threading.Thread(target=stop_capture)
 capture_thread.start()
 stop_thread.start()
 
+# 프로그램 종료 대기
 try:
     capture_thread.join()
     stop_thread.join()
