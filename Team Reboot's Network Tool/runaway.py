@@ -1,7 +1,9 @@
 from scapy.all import sniff, IP, TCP, UDP
+from scapy.layers.inet import IP, TCP #페이로드 출력을 위한 임포트
 import time
 import threading
 import sys
+import re
 
 # 패킷 캡처 및 지연 시간, 패킷 크기, 프로토콜, 세션 정보 출력
 
@@ -17,6 +19,7 @@ def packet_callback(packet):
         seq_num = 0
         tcp_flags = None
         udp_length = None
+        
         
         if TCP in packet:
             seq_num = packet[TCP].seq
@@ -66,6 +69,18 @@ def packet_callback(packet):
                 print(f"TCP Flags: {flag_desc}")
             if udp_length is not None:
                 print(f"UDP Length: {udp_length}")  # UDP 패킷 길이 출력
+        
+        #Lee -> 추가적으로 손을 더 봐야할 거 같습니다.
+        if IP in packet and TCP in packet : # 패킷 안에 IP와 TCP일 때 payload 출력
+            payload = packet[TCP].payload
+            if payload:
+                try:
+                    payload_str = payload.decode('utf-8') #utf-8로 디코딩
+                    if 'GET' in payload_str or 'POST' in payload_str: #페이로드 중 GET, POST가 있는지 확인 후 페이로드 출력
+                        print(f"Payload: {payload}")
+                except (UnicodeDecodeError, AttributeError):
+                    print('Payload Decoding Error...')
+                
         print("-" * 50)
         print("\033[0m")  # 기본색으로 리셋
 
@@ -77,7 +92,7 @@ def stop_capture():
     sys.exit(0)  # 프로그램 종료
 
 # 패킷 캡처 및 종료 스레드 시작
-capture_thread = threading.Thread(target=lambda: sniff(filter="ip", prn=packet_callback), daemon=True)
+capture_thread = threading.Thread(target=lambda: sniff(filter="ip and tcp", prn=packet_callback), daemon=True)
 stop_thread = threading.Thread(target=stop_capture)
 
 # 스레드 시작

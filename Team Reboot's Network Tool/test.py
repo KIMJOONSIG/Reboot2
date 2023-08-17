@@ -9,6 +9,14 @@ prev_packet_count = 0
 def raise_alert(packet_count):
     print(f"Alert! Excessive packet rate detected: {packet_count} packets in the last second.")
 
+<<<<<<< HEAD
+=======
+# land attack을 탐지하는 함수
+def detect_land_attack(packet):
+    if IP in packet and packet[IP].src == packet[IP].dst:
+        raise_alert(1)
+
+>>>>>>> dd4fca7d810f308982ed9abeb848652e76659542
 try:
     while True:
         current_time = time.time()
@@ -23,6 +31,13 @@ try:
             packet_rate = packet_count / elapsed_time
             if packet_rate > 300:  # 평균 300 패킷/초 이상이면 경고 발생
                 raise_alert(packet_rate)
+<<<<<<< HEAD
+=======
+	
+	# land attack 탐지
+        for packet in packets:
+            detect_land_attack(packet)
+>>>>>>> dd4fca7d810f308982ed9abeb848652e76659542
 
         # 이전 값 업데이트
         prev_time = current_time
