@@ -1,9 +1,18 @@
 #sudo 명령어를 사용하여 파일 실행(ex. sudo python3 protocol_over.py)
 from collections import defaultdict
 from scapy.all import sniff, IP, TCP, UDP
+from scapy.all import DNSRR
 import time
 import threading
 import sys
+
+##########악성 도메인 목록 불러오기############
+def load_malicious_domains(file_path):
+    with open(file_path, 'r') as file:
+        return set(line.strip() for line in file)
+
+malicious_domains = load_malicious_domains("malicious_domains.txt")
+#########################################
 
 # 패킷 소스 IP 별 카운트 및 마지막 기록 시간 저장
 packet_count = defaultdict(int)
@@ -13,10 +22,21 @@ packet_last_time = defaultdict(float)
 THRESHOLD = 10  # 임곗값(연속 접속 시도 횟수 임계값)
 DURATION = 5  # 기간 (연속 접속 시도 감지 기간) (초)
 
+# 중지 이벤트 객체 생성
+stop_event = threading.Event()
+
 # 패킷 콜백 함수
 def packet_callback(packet):
     global packet_count, packet_last_time
     
+    #패킷에서 DNS 응답과 도메인 이름 추출(악성 도메인은 초록색으로 추출)
+    if packet.haslayer(DNSRR):
+        rrname = packet[DNSRR].rrname.decode('utf-8')
+        if rrname in malicious_domains:
+            print(f"\033[92m악성 도메인 감지: {rrname}\033[0m") ##########악성 도메인 감지#######
+        else:
+            print(f"도메인: {rrname}") #######일반적인 도메인##########
+
     # 패킷에 IP 계층이 있으면
     if packet.haslayer(IP):
         timestamp = time.time()  # 현재 시간
@@ -99,6 +119,7 @@ def packet_callback(packet):
 def stop_capture():
     print("Press Enter to stop capturing...")
     input()
+    stop_event.est()
     sys.exit(0)
 
 # 패킷 캡처 및 종료 스레드 시작
@@ -115,6 +136,7 @@ try:
     stop_thread.join()
 except KeyboardInterrupt:
     print("Interrupted by user.")
+    stop_event.set()
     sys.exit(0)
 
 print("Packet capturing stopped.")
