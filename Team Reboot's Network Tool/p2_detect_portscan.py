@@ -7,14 +7,10 @@ import os
 
 # 패킷 캡처 및 지연 시간, 패킷 크기, 프로토콜, 세션 정보 출력
 
-# ### 포트 스캔 탐지를 위한 변수들
+# ###################### 포트 스캔 탐지를 위한 변수들 #######################
 port_scan_threshold = 10 # 허용되는 연결 시도 횟수
 port_scan_window = 5 # 초
 recent_ports = defaultdict(list)
-
-# ### 반복 연결 탐지를 위한 변수
-connection_threshold = 10 # 허용되는 연결 시도 횟수
-recent_connections = defaultdict(list) # 연결 기록을 저장하는 딕셔너리
 
 def packet_callback(packet):
     if packet.haslayer(IP):
@@ -57,20 +53,7 @@ def packet_callback(packet):
         if packet_size > 1500:  # 예: 패킷 크기가 1500 바이트를 초과하는 경우 비정상으로 판별
             is_size_abnormal = True
 
-        # ### 반복 연결 탐지 로직 추가
-        is_repeated_connection = False
-        recent_connections[src_ip].append(timestamp)  
-
-        # 지정된 연결 임계값 이내의 연결 시도 횟수 확인
-        recent_conn_attempts = [t for t in recent_connections[src_ip] if timestamp - t < port_scan_window]
-        if len(recent_conn_attempts) >= connection_threshold:
-            is_repeated_connection = True
-            recent_connections[src_ip] = []  # 초기화
-
-            # 반복 연결 탐지 결과 출력
-            print(f"\033[94mRepeated connection detected from{src_ip}|033\0m")
-
-        # ### 포트 스캔 감지 로직 추가
+        # ################## 포트 스캔 감지 로직 추가 ################
 
         is_port_scan = False
         if TCP in packet and packet[TCP].dport:  # TCP 패킷이며 목적지 포트가 있는 경우
@@ -82,7 +65,22 @@ def packet_callback(packet):
             if len(recent_attempts) >= port_scan_threshold:
                 is_port_scan = True
                 recent_ports[src_ip] = []  # 초기화
-        
+            
+            ############### 확실한 포트 스캔 탐지 로직 추가 (TCP 플래그 기반) ###################
+            if "SYN" in flag_desc and "ACK" not in flag_desc:  # SYN 스캔 (SYN Scan)
+                is_port_scan = True
+            elif "FIN" in flag_desc and not any(flag in flag_desc for flag in ["SYN", "ACK", "RST"]):  # FIN flag만 (FIN Scan)])
+                is_port_scan = True
+            elif not any(flag in flag_desc for flag in ["SYN", "ACK", "FIN" "RST", "PSH", "URG"]): # Null 스캔
+                is_port_scan = True
+            elif all(flag in flag_desc for flag in ["Fin", "PSH", "URG"]):  #Xmas 스캔
+                is_port_scan = True
+            elif "ACK" in flag_desc and not any(flag in flag_desc for flag in ["SYN", "FIN", "RST"]):  # ACK 스캔
+                is_port_scan = True
+
+            if is_port_scan:
+                print(f"\033[95mPort scan detected from {src_ip}!\033[0m")    
+
         # 색상 선택
         if is_protocol_abnormal:
             color = "\033[91m"  # 빨간색
@@ -107,7 +105,7 @@ def packet_callback(packet):
         print("\033[0m")  # 기본색으로 리셋
 
 
-# ### 종료 로직 수정 ###
+# ###################### 종료 로직 수정 #############################
 def stop_capture():
     print("Press Enter to stop capturing...")
     input()  # 엔터 키를 대기
@@ -121,3 +119,4 @@ try:
     sniff(filter="ip", prn=packet_callback)  # 주 스레드에서 실행 (수정된 부분)
 except KeyboardInterrupt:
     print("Interrupted by user.")
+##########################################################################
