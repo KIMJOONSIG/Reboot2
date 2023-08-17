@@ -17,8 +17,13 @@ def feature3():
 def main():
     while True:
         reboot_ascii = pyfiglet.figlet_format("Team Reboot", font="slant")
-        print(reboot_ascii)
-        print("Copyright © Team Reboot")
+        box_width = max(map(len, reboot_ascii.split('\n')))
+        print("┌" + "─" * (box_width + 2) + "┐")
+        print("│ " + "\n│ ".join(reboot_ascii.split('\n')) + " │")
+        copyright_line = "Copyright © Team Reboot"
+        copyright_spacing = " " * ((box_width - len(copyright_line)) // 2)
+        print("│" + copyright_spacing + copyright_line + copyright_spacing + "│")
+        print("└" + "─" * (box_width + 2) + "┘")
         print("\n")
         print("1. protocol_over.py")
         print("2. Execute Feature 2")
