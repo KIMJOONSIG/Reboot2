@@ -1,7 +1,7 @@
-#sudo 명령어를 사용하여 파일 실행(ex. sudo python3 protocol_over.py)
+###sudo 명령어를 사용하여 파일 실행(ex. sudo python3 protocol_over.py)
+###melicious_domain.txt 파일도 다운받아 함께 실행해야 함
 from collections import defaultdict
-from scapy.all import sniff, IP, TCP, UDP
-from scapy.all import DNSRR
+from scapy.all import sniff, IP, TCP, UDP, DNSRR
 import time
 import threading
 import sys
