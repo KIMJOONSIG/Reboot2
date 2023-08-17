@@ -119,7 +119,7 @@ def packet_callback(packet):
 def stop_capture():
     print("Press Enter to stop capturing...")
     input()
-    stop_event.est()
+    stop_event.set()
     sys.exit(0)
 
 # 패킷 캡처 및 종료 스레드 시작
