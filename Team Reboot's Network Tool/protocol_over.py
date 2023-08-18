@@ -1,7 +1,7 @@
 ###sudo 명령어를 사용하여 파일 실행(ex. sudo python3 protocol_over.py)
 ###melicious_domain.txt 파일도 다운받아 함께 실행해야 함
 from collections import defaultdict
-from scapy.all import sniff, IP, TCP, UDP, DNSRR
+from scapy.all import sniff, IP, TCP, UDP, DNSRR, Raw
 import time
 import threading
 import sys
@@ -113,6 +113,14 @@ def packet_callback(packet):
             if udp_length is not None:
                 print(f"UDP Length: {udp_length}")
         print("-" * 50)
+        print("\033[0m")
+
+        ########디렉토리 리스팅 관련 HTTP 요청 탐지##########
+        if packet.haslayer(Raw):
+            payload = packet[Raw].load.decode(errors='ignore')
+            if payload.startswith('GET') and(keyword in payload.lower() for keyword in ['directory', 'index', 'listing']):
+                print(f"\033[91mDirectory listing request detected: {payload}\033[0m")
+#################################################################
         print("\033[0m")
 
 # 패킷 캡처 종료 함수
