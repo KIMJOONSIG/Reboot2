@@ -1,4 +1,3 @@
-#aws 내에서 직접 실행하여 로그를 텔레그램 봇으로 보내는 코드
 import json
 import gzip
 from watchdog.observers import Observer
@@ -13,6 +12,16 @@ bot = Bot(token=token)
 # 모니터링할 로그 디렉터리 정의
 log_dir = '/data/suricata/log'  # 로그 파일 경로로 변경
 
+# 로그 메시지 파싱 함수
+def parse_log(log):
+    log_json = json.loads(log)
+    alert_data = log_json.get('alert', {})
+    msg = f"Timestamp: {log_json.get('timestamp', '')}\n"
+    msg += f"Alert Category: {alert_data.get('category', '')}\n"
+    msg += f"Alert Signature: {alert_data.get('signature', '')}\n"
+    msg += f"Alert Severity: {alert_data.get('severity', '')}\n"
+    return msg
+
 # 로그 파일 이벤트를 처리하는 사용자 지정 클래스 생성
 class LogHandler(FileSystemEventHandler):
     def process(self, event):
@@ -21,13 +30,15 @@ class LogHandler(FileSystemEventHandler):
             # gzipped 파일을 열고 내용 읽기
             with gzip.open(event.src_path, 'rt') as file:
                 content = file.read()
+                # 로그 파일 내용 파싱
+                parsed_log = parse_log(content)
                 # 로그 파일 내용을 지정된 텔레그램 채팅으로 보내기
-                bot.send_message(chat_id=chat_id, text=f"{event.src_path} 파일에 다음 로그 내용이 있습니다:\n{content}")
-                
+                bot.send_message(chat_id=chat_id, text=f"{event.src_path} 파일에 다음 로그 내용이 있습니다:\n{parsed_log}")
+
     # 파일이 수정될 때 이벤트 처리
     def on_modified(self, event):
         self.process(event)
-        
+
     # 파일이 생성될 때 이벤트 처리
     def on_created(self, event):
         self.process(event)
