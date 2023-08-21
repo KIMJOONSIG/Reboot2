@@ -1,3 +1,4 @@
+#로컬 환경에서 aws의 log파일 가져온 후 텔레그램으로 보냄
 import os
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
