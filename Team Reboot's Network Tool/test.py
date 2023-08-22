@@ -9,14 +9,30 @@ prev_packet_count = 0
 def raise_alert(packet_count):
     print(f"Alert! Excessive packet rate detected: {packet_count} packets in the last second.")
 
-<<<<<<< HEAD
-=======
 # land attack을 탐지하는 함수
 def detect_land_attack(packet):
     if IP in packet and packet[IP].src == packet[IP].dst:
         raise_alert(1)
 
->>>>>>> dd4fca7d810f308982ed9abeb848652e76659542
+
+# MAC 주소 관리용
+duplicate_ips = defaultdict(set)
+
+# arp spoofing을 탐지하는 함수
+def arp_monitor_callback(pkt):
+    if ARP in pkt and pkt[ARP].op == 2:  # ARP 응답 패킷인 경우
+        ip = pkt[ARP].psrc
+        mac = pkt[ARP].hwsrc
+        
+	# mac주소를 이용해 arp spoofing 탐지
+        if ip in duplicate_ips and mac not in duplicate_ips[ip]:
+            print(f"Possible ARP Spoofing detected:")
+            print(f"IP: {ip}, MAC: {mac}")
+            print(f"Other MACs for this IP: {', '.join(duplicate_ips[ip])}")
+            print("=" * 40)
+        
+        duplicate_ips[ip].add(mac)
+
 try:
     while True:
         current_time = time.time()
@@ -31,15 +47,14 @@ try:
             packet_rate = packet_count / elapsed_time
             if packet_rate > 300:  # 평균 300 패킷/초 이상이면 경고 발생
                 raise_alert(packet_rate)
-<<<<<<< HEAD
-=======
 	
-	# land attack 탐지
         for packet in packets:
+            # land attack 탐지
             detect_land_attack(packet)
->>>>>>> dd4fca7d810f308982ed9abeb848652e76659542
+ 	    # arp spoofing 탐지
+            arp_monitor_callback(packet)
 
-        # 이전 값 업데이트
+        # 이전 시간값 업데이트
         prev_time = current_time
         prev_packet_count = packet_count
 
