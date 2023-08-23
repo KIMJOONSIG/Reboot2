@@ -26,7 +26,7 @@ def parse_log(log):
         # Severity를 기준으로 필터링
         # Severity가 2인 경우만 알림을 전송
 
-        if 'alert' in data and data['alert'].get('severity') in [1]:  
+        if 'alert' in data and data['alert'].get('severity') in [1, 2]:  
             msg = f"Timestamp: {data.get('timestamp')}\n"
             msg += f"Event Type: {data.get('event_type')}\n"
             msg += f"Source IP: {data.get('src_ip', 'N/A')}\n"
