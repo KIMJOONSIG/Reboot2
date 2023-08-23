@@ -12,7 +12,7 @@ chat_id = "6389282491"  # 여러분의 채팅 ID로 변경
 bot = Bot(token=token)
 
 # 모니터링할 로그 디렉터리 정의
-log_dir = '/data/suricata/log'  # 로그 파일 경로로 변경
+log_dir = '/data/Elasticpot/log'  # 로그 파일 경로로 변경
 
 # 로그 메시지 파싱 함수
 def parse_log(log):
