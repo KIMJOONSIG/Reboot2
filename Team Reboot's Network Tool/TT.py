@@ -22,20 +22,25 @@ telegram_api_url = f"https://api.telegram.org/bot{token}/sendMessage"
 def parse_log(log):
     try:
         data = json.loads(log)
-        
-        msg = f"Timestamp: {data.get('timestamp')}\n"
-        msg += f"Event Type: {data.get('event_type')}\n"
-        msg += f"Source IP: {data.get('src_ip', 'N/A')}\n"
-        msg += f"Source Port: {data.get('src_port', 'N/A')}\n"
-        msg += f"Destination IP: {data.get('dest_ip', 'N/A')}\n"
-        msg += f"Destination Port: {data.get('dest_port', 'N/A')}\n"
-        
-        if 'alert' in data:
+
+        # Severity를 기준으로 필터링
+        # Severity가 2인 경우만 알림을 전송
+
+        if 'alert' in data and data['alert'].get('severity') in [1]:  
+            msg = f"Timestamp: {data.get('timestamp')}\n"
+            msg += f"Event Type: {data.get('event_type')}\n"
+            msg += f"Source IP: {data.get('src_ip', 'N/A')}\n"
+            msg += f"Source Port: {data.get('src_port', 'N/A')}\n"
+            msg += f"Destination IP: {data.get('dest_ip', 'N/A')}\n"
+            msg += f"Destination Port: {data.get('dest_port', 'N/A')}\n"
             msg += f"Alert: {data['alert'].get('signature', 'N/A')}\n"
             msg += f"Category: {data['alert'].get('category', 'N/A')}\n"
             msg += f"Severity: {data['alert'].get('severity', 'N/A')}\n"
 
-        return msg
+            return msg
+        else:
+            return None 
+        
     except Exception as e:
         return f"Error parsing the log: {log}. Error: {e}"  # 에러 내용도 함께 출력
 
@@ -72,7 +77,8 @@ with open(eve_json_local_path, 'r') as file:
     file.seek(last_size)  # 이전 크기부터 시작
     for line in file:
         parsed_log_content = parse_log(line.strip())  # 로그 파싱 추가
-        send_message(parsed_log_content)  # 파싱된 로그 내용 전송
+        if parsed_log_content:
+            send_message(parsed_log_content)  # 파싱된 로그 내용 전송
 
 # 현재 크기 저장
 with open(last_size_file, 'w') as f:
