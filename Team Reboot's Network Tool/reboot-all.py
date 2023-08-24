@@ -1,15 +1,18 @@
 ###sudo 명령어를 사용하여 파일 실행(ex. sudo python3 protocol_over.py)
 ###melicious_domain.txt 파일도 다운받아 함께 실행해야 함
 from collections import defaultdict
-from scapy.all import sniff, IP, TCP, UDP, DNSRR, Raw,ARP
+from scapy.all import sniff, IP, TCP, UDP, DNSRR, Raw,ARP,Ether
 import time
 import threading
 import sys
+import re
 
+
+###탐지 공격종류: 악성 도메인 탐지, SQL 인젝션 탐지, 랜드 어택, ARP 스푸핑, 스캐너 탐지, ssh연결 탐지,get post연결 탐지 ,목적지가 127.0.0.1 탐지, 디렉터리 리스팅 탐지, xss탐지, Command_injection탐지,VPN탐지,네트워크 스니핑 탐지
 ##########악성 도메인 목록 불러오기############
 def load_malicious_domains(file_path):
     with open(file_path, 'r') as file:
-        return set(line.strip() for line in file)
+       return set(line.strip() for line in file)
 
 malicious_domains = load_malicious_domains("malicious_domains.txt")
 #########################################
@@ -92,10 +95,7 @@ def packet_callback(packet):
             is_protocol_abnormal = True
         
         # 비정상 패킷 크기 판별
-        is_size_abnormal = False
-        if packet_size > 1500:  # 패킷 크기가 1500 바이트를 초과하는 경우
-            is_size_abnormal = True
-
+ 
         if TCP in packet:
             ip_dst = packet[IP].dst
             src_port = packet[TCP].sport
@@ -135,8 +135,7 @@ def packet_callback(packet):
         # 색상 선택
         if is_protocol_abnormal:
             color = "\033[91m"
-        elif is_size_abnormal:
-            color = "\033[93m"
+        
         else:
             color = "\033[0m"
         
@@ -156,22 +155,64 @@ def packet_callback(packet):
         print("-" * 50)
         print("\033[0m")
 
+
+        # 패킷이 IP 레이어를 가지고 있고, 해당 IP의 목적지가 127.0.0.1인지 확인
+    if packet.haslayer(IP) and packet[IP].dst == "127.0.0.1":
+        print("Detected packet with destination 127.0.0.1:")
+
         ########디렉토리 리스팅 관련 HTTP 요청 탐지##########
         if packet.haslayer(Raw):
             payload = packet[Raw].load.decode(errors='ignore')
             if payload.startswith('GET') and(keyword in payload.lower() for keyword in ['directory', 'index', 'listing']):
                 print(f"\033[91mDirectory listing request detected: {payload}\033[0m")
-        
-        #####SQL Injection 탐지
-        if packet.haslayer(Raw) and packet.haslayer(TCP):
-            payload = packet[Raw].load.decode('utf-8', errors='ignore')
-            if detect_sql_injection(payload):
-                print("SQL Injection detected!")
-                print("Packet details:")
-                print(packet.show())
-                print("=" * 50)
+     
+                ##Command_injection탐지
+            if "';" in payload or "&&" in payload:
+                print("Possible Command Injection detected!")
+                print("Packet Details:")
+                print(packet.summary())
+                print("Payload:")
+                print(payload)
+                print("=" * 40)
+
+            ##XSS탐지
+            if packet.haslayer(Raw) and "HTTP" in payload:
+                http_payload = payload.split('\r\n\r\n')[1]
+                # XSS 취약점 패턴 검사
+                xss_patterns = ["<script>", "alert(", "onmouseover="]
+                for pattern in xss_patterns:
+                    if re.search(pattern, http_payload, re.IGNORECASE):
+                        print("Possible XSS detected!")
+                        print("Packet Details:")
+                        print(packet.summary())
+                        print("Payload:")
+                        print(http_payload)
+                        print("=" * 40)
+        if packet.haslayer(IP):
+            if packet.haslayer(TCP):
+                payload = packet[TCP].payload
+                if isinstance(payload, bytes):
+                    payload = payload.decode('utf-8', errors='ignore')
+                    # OpenVPN 패킷 검출
+                    if "OpenVPN" in payload:
+                        print("Possible OpenVPN traffic detected!")
+                        print("Packet Details:")
+                        print(packet.summary())
+                        print("=" * 40)
+            # WireGuard 패킷 검출
+                    if "WireGuard" in payload:
+                        print("Possible WireGuard traffic detected!")
+                        print("Packet Details:")
+                        print(packet.summary())
+                        print("=" * 40)
+
+    if packet.haslayer(Ether) and packet[Ether].src != packet[Ether].dst:
+        print("Possible Network Sniffing Detected!")
+        print("Packet Details:")
+        print(packet.summary())
+        print("=" * 40)
 #################################################################
-        print("\033[0m")
+        
         
         
         detect_land_attack(packet)
