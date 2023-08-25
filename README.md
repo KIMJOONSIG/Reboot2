@@ -88,7 +88,7 @@
      - Command_injection
      - VPN
      - Network sniffing
-- Repository 구조
+-  Repository 구조
   
 ```bash
 Network Packet Analysis System
@@ -108,6 +108,18 @@ Network Packet Analysis System
   2. 텔레그램 봇 알림: 위협이 감지되면 사용자에게 텔레그램 봇을 통해 실시간 알림을 전송합니다. 사용자는 언제 어디서나 위협 알림을 확인할 수 있습니다.
   3. 맞춤형 룰셋 구성: 특정 조건 또는 위협 유형에 대한 알림을 받을 수 있습니다.
   4. 자세한 로그 정보: T-pot의 Elastick으로 시각화 된 자세한 로그 정보 확인 가능
+- 환경 구성:
+  - [T-pot 설치](https://github.com/telekom-security/tpotce#system-requirements) -> Telegram bot 만들기 -> [TT.py](https://github.com/KIMJOONSIG/Reboot2/blob/main/Team%20Reboot's%20Network%20Tool/Telegram%20threat%20alarm%20system%20using%20T-pot/TT.py)로 연결
+- Repository 구조
+  ```bash
+Telegram threat alarm system using T-pot
+│
+├── code
+│   └── TT.py  # 주요 코드 파일
+└──── suricata_rules # suricata_rules
+
+```
+
 <br>
 
 
