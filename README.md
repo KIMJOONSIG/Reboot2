@@ -69,24 +69,25 @@
 
 <br>
 
-## ☝️ 파이썬 코드를 활용한 패킷 캡처 및 분석 시스템 개발
+## ☝️ [파이썬 코드를 활용한 패킷 캡처 및 분석 시스템 개발](https://github.com/KIMJOONSIG/Reboot2/tree/main/Team%20Reboot's%20Network%20Tool/Network%20Packet%20Analysis%20System)
 - 코드 기능
   - 패킷 캡처
   - 패킷을 이용한 공격 탐지 목록
     - melicious domain, SQL injection, land attack, ARP spoofing, scaaner, ssh 연결, get post연결, 목적지가 127.0.0.1 탐지, directory listing, XSS, Command_injection, VPN, Network sniffing
 - Repository 구조
+  
     ```bash
-[Network Packet Analysis System](https://github.com/KIMJOONSIG/Reboot2/tree/main/Team%20Reboot's%20Network%20Tool/Network%20Packet%20Analysis%20System)
+Network Packet Analysis System
 │
 ├── code
-│   └── [reboot-all.py](https://github.com/KIMJOONSIG/Reboot2/blob/main/Team%20Reboot's%20Network%20Tool/Network%20Packet%20Analysis%20System/reboot-all.py)
-└──── [malicious_domains.txt](https://github.com/KIMJOONSIG/Reboot2/blob/main/Team%20Reboot's%20Network%20Tool/Network%20Packet%20Analysis%20System/malicious_domains.txt)
+│   └── reboot-all.py
+└──── malicious_domains.txt
 
 ``` 
 <br>
 
 
-## ✌️ Suricata와 T-pot을 이용한 Telegram threat alert bot 개발
+## ✌️ [Suricata와 T-pot을 이용한 Telegram threat alert bot 개발](https://github.com/KIMJOONSIG/Reboot2/tree/main/Team%20Reboot's%20Network%20Tool/Telegram%20threat%20alarm%20system%20using%20T-pot)
 <br>
 
 
