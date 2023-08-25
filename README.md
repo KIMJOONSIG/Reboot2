@@ -97,7 +97,18 @@ Network Packet Analysis System
 │   └── reboot-all.py  # 주요 코드 파일
 └──── malicious_domains.txt # 악성 도메인 목록
 
-``` 
+```
+
+- 기능 구성
+   <table>
+        <tr>
+              <th>Port Scanner Detect</th>
+              <th>Packet Size and Speed</th>
+        </tr>
+        <tr>
+          <td valign="top"><img src="https://github.com/KIMJOONSIG/Reboot2/assets/129662947/e1c3c289-a95c-422f-af5c-902389ded591"></td>
+          <td valign="top"><img src="https://github.com/KIMJOONSIG/Reboot2/assets/129662947/1e8bed00-4999-46ad-ac46-b79ded99ff48"></td>
+        </tr>
 <br>
 
 
