@@ -16,7 +16,7 @@
 
 ### 📗 Tools
 <img src="https://img.shields.io/badge/Visual Studio Code-007ACC?style=for-the-badge&logo=visualstudiocode&logoColor=white"/> <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white"/> <img src="https://img.shields.io/badge/Security Onion-000000?style=for-the-badge&logo=aHR0cHM6Ly9zZWN1cml0eW9uaW9uc29sdXRpb25zLmNvbS9sb2dvL2xvZ28tc28tZGFyay5zdmc="/> 
-<br><img src="https://img.shields.io/badge/Suricata-ff7f00?style=for-the-badge&logo=aHR0cHM6Ly9zdXJpY2F0YS5pby93cC1jb250ZW50L3VwbG9hZHMvMjAyMi8wMS9Mb2dvSG9yaXotU3VyaWNhdGFGaW5hbC00LXRyYW5zbHVjZW50LnBuZw=="/> <img src="https://img.shields.io/badge/Telegram-26A5E4?style=for-the-badge&logo=telegram&logoColor=white"/> <img src="https://img.shields.io/badge/T-pot-ff3399?style=for-the-badge&logo=&logoColor=white"/>
+<br><img src="https://img.shields.io/badge/Suricata-ff7f00?style=for-the-badge&logo=aHR0cHM6Ly9zdXJpY2F0YS5pby93cC1jb250ZW50L3VwbG9hZHMvMjAyMi8wMS9Mb2dvSG9yaXotU3VyaWNhdGFGaW5hbC00LXRyYW5zbHVjZW50LnBuZw=="/> <img src="https://img.shields.io/badge/Telegram-26A5E4?style=for-the-badge&logo=telegram&logoColor=white"/> <img src="https://img.shields.io/badge/Tpot-ff3399?style=for-the-badge&logo=&logoColor=white"/>
 
 ### 📙 Communication
 <img src="https://img.shields.io/badge/Slack-4A154B?style=for-the-badge&logo=slack&logoColor=white"/> <img src="https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=notion&logoColor=white"/> 
