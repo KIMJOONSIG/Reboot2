@@ -58,7 +58,7 @@
   <tr>
     <td align="center">김문정</td>
     <td align="center">조원</td>
-    <th align="center">Port scan Detection, </th>
+    <th align="center">Port scan Detection </th>
   </tr>
     <tr>
     <td align="center">조인철</td>
