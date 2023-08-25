@@ -6,7 +6,7 @@
 
 - **과제 주제:** 네트워크 패킷 분석 시스템 개발
 - **과제 기간:** 2023.08.15 ~ 2023.08.28
-- **과제 설명:** [파이썬 코드를 활용한 패킷 캡처 및 분석 시스템 개발](# 파이썬 코드를 활용한 패킷 캡처 및 분석 시스템 개발)과 Suricata와 T-pot을 이용한 Telegram threat alert bot 개발
+- **과제 설명:** 파이썬 코드를 활용한 패킷 캡처 및 분석 시스템 개발과 Suricata와 T-pot을 이용한 Telegram threat alert bot 개발
 
 <br>
 
@@ -42,7 +42,7 @@
     <td align="center">김준식</td>
     <td align="center">조원</td>
     <th align="center">Directory listing Http * Detection Malicious Domain Detection
-    <br>Telegram threat alarm system using T-pot and Suricata
+    <br> Telegram threat alarm system using T-pot and Customizing Surikata Rules
  </th>
   </tr>
       <tr>
@@ -53,26 +53,27 @@
   <tr>
     <td align="center">이근희</td>
     <td align="center">조원</td>
-    <th align="center"></th>
+    <th align="center">Security Onion log output</th>
   </tr>
   <tr>
     <td align="center">김문정</td>
     <td align="center">조원</td>
-    <th align="center"></th>
+    <th align="center">Port scan Detection</th>
   </tr>
     <tr>
     <td align="center">조인철</td>
     <td align="center">조원</td>
-    <th align="center"></th>
+    <th align="center">SSH Remote Control Attempts * Incoming packets with destination 127.0.0.1 Detection</th>
   </tr>
 </table>
 
 <br>
 
-# 파이썬 코드를 활용한 패킷 캡처 및 분석 시스템 개발
+# ☝️ 파이썬 코드를 활용한 패킷 캡처 및 분석 시스템 개발
 <br>
 
-# Suricata와 T-pot을 이용한 Telegram threat alert bot 개발
+
+# ✌️ Suricata와 T-pot을 이용한 Telegram threat alert bot 개발
 <br>
 
 
