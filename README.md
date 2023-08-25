@@ -73,21 +73,21 @@
 - 개요: 네트워크 패킷을 캡처하여 다양한 유형의 네트워크 공격을 탐지하는 기능을 제공합니다. 시스템은 파이썬을 기반으로 하며, 특히 네트워크에서 발생하는 다양한 유형의 악성 활동을 탐지하기 위한 여러 기능을 갖추고 있습니다.
 - 주요 기능
   1. 패킷 캡처
-    - 네트워크 트래픽을 실시간으로 캡처하여 분석합니다
+     - 네트워크 트래픽을 실시간으로 캡처하여 분석합니다
   2. 패킷을 이용한 공격 탐지 목록
-    - melicious domain
-    - SQL injection
-    - land attack
-    - ARP spoofing
-    - scaaner
-    - ssh 연결
-    - get post연결
-    - 목적지가 127.0.0.1 탐지
-    - directory listing
-    - XSS
-    - Command_injection
-    - VPN
-    - Network sniffing
+     - melicious domain
+     - SQL injection
+     - land attack
+     - ARP spoofing
+     - scaaner
+     - ssh 연결
+     - get post연결
+     - 목적지가 127.0.0.1 탐지
+     - directory listing
+     - XSS
+     - Command_injection
+     - VPN
+     - Network sniffing
 - Repository 구조
   
 ```bash
