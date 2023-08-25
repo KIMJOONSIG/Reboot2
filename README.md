@@ -41,7 +41,7 @@
     <tr>
     <td align="center">김준식</td>
     <td align="center">조원</td>
-    <th align="center">Directory listing Http * Detection Malicious Domain Detection
+    <th align="center">Directory listing Http * Malicious Domain Detection
     <br> Telegram threat alarm system using T-pot and Customizing Surikata Rules
  </th>
   </tr>
