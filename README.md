@@ -106,7 +106,7 @@ Network Packet Analysis System
               <th>Packet Size and Speed</th>
         </tr>
         <tr>
-          <td valign="top"><img src="https://github.com/KIMJOONSIG/Reboot2/assets/129662947/8fc6e199-d914-4d95-8f4d-9a8f67dcf881"></td>
+          <td valign="top"><img src=""></td>
           <td valign="top"><img src="https://github.com/KIMJOONSIG/Reboot2/assets/129662947/1e8bed00-4999-46ad-ac46-b79ded99ff48"></td>
         </tr>
         </table>
