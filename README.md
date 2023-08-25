@@ -125,10 +125,12 @@ Telegram threat alarm system using T-pot
         <tr>
               <th>Telegram Bot</th>
               <th>Telegram log 전송</th>
-                <th>elastic을 이용한 로그 시각화</th>
+                <th>Elastic을 이용한 로그 시각화</th>
         </tr>
   <tr>
     <td valign="top"><img src="https://github.com/KIMJOONSIG/BUSTAGO/assets/129662947/9b485721-8755-4cce-9201-a0efd1a4b395"></td>
+    <td valign="top"><img src="https://github.com/KIMJOONSIG/BUSTAGO/assets/129662947/f72f8d9d-32ae-4cc5-9f71-df71217d5bae"></td>
+    <td valign="top"><img src="https://github.com/KIMJOONSIG/BUSTAGO/assets/129662947/ce88c50f-16ea-4501-b4e7-d61f66e8fb5e"></td>
   </tr>
   </table>
 <br>
