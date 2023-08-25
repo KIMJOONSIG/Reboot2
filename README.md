@@ -109,7 +109,7 @@ Network Packet Analysis System
   3. 맞춤형 룰셋 구성: 특정 조건 또는 위협 유형에 대한 알림을 받을 수 있습니다.
   4. 자세한 로그 정보: T-pot의 Elastick으로 시각화 된 자세한 로그 정보 확인 가능
 - 환경 구성:
-  - [T-pot 설치](https://github.com/telekom-security/tpotce#system-requirements) -> Telegram bot 만들기 -> [TT.py](https://github.com/KIMJOONSIG/Reboot2/blob/main/Team%20Reboot's%20Network%20Tool/Telegram%20threat%20alarm%20system%20using%20T-pot/TT.py)로 연결
+  - [T-pot 설치](https://github.com/telekom-security/tpotce) -> Telegram bot 만들기 -> [TT.py](https://github.com/KIMJOONSIG/Reboot2/blob/main/Team%20Reboot's%20Network%20Tool/Telegram%20threat%20alarm%20system%20using%20T-pot/TT.py)로 T-pot과 Telegram을 연결하여 나만의 실시간 위협 감지 시스템 구축
 - Repository 구조
 ```bash
 Telegram threat alarm system using T-pot
