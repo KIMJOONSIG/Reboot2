@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.myscript.launcher</string>
+    
+    <key>ProgramArguments</key>
+    <array>
+        <string>/usr/bin/python3</string>
+        <string>/Users/threatexe/Desktop/Reboot Team Sec Project/TT.py</string>
+    </array>
+    
+    <key>StartInterval</key>
+    <integer>60</integer>
+    
+    <key>WorkingDirectory</key>
+    <string>/Users/threatexe/Desktop/Reboot Team Sec Project/</string>
+    
+    <key>StandardErrorPath</key>
+    <string>/Volumes/Untitled/myscript.err</string>
+
+    <key>StandardOutPath</key>
+    <string>/Volumes/Untitled/myscript.out</string>
+
+    
+    <key>RunAtLoad</key>
+    <true/>
+</dict>
+</plist>
