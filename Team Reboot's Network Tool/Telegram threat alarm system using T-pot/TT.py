@@ -15,7 +15,7 @@ local_log_directory = "/Volumes/Untitled/aws_logs"
 last_size_file = os.path.join(local_log_directory, "last_size.txt")  # 마지막 크기 저장 파일
 
 # 텔레그램 설정
-token = "6436106278:AAEyp4rzW8OHqKg5UDHTSWOIWyrrzwFoyfs"
+token = ""
 chat_id = "6389282491"
 telegram_api_url = f"https://api.telegram.org/bot{token}/sendMessage"
 
