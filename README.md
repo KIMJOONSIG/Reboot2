@@ -6,7 +6,7 @@
 
 - **과제 주제:** 네트워크 패킷 분석 시스템 개발
 - **과제 기간:** 2023.08.15 ~ 2023.08.28
-- **과제 설명:** 파이썬 코드를 활용한 패킷 캡처 및 분석 시스템 개발과 Suricata와 T-pot을 이용한 Telegram threat alert bot 개발
+- **과제 설명:** [파이썬 코드를 활용한 패킷 캡처 및 분석 시스템 개발] (# 파이썬 코드를 활용한 패킷 캡처 및 분석 시스템 개발)과 Suricata와 T-pot을 이용한 Telegram threat alert bot 개발
 
 <br>
 
@@ -35,34 +35,38 @@
   <tr>
     <td align="center">박서경</td>
     <td align="center">조장</td>
-    <th align="center">Command-based injection Attack, OpenVPN * WireGuard Packet
+    <th align="center">Command-based injection Attack * OpenVPN * WireGuard Packet Detection
     <br> Syn Flooding, Slowris, XSS Attack Detection </th>
   </tr>
     <tr>
     <td align="center">김준식</td>
     <td align="center">조원</td>
-    <th align="center">Directory listing Http Request * Malicious Domain Detection
-    <br>Telegram threat alarm system using T-pot and suricata
+    <th align="center">Directory listing Http * Detection Malicious Domain Detection
+    <br>Telegram threat alarm system using T-pot and Suricata
  </th>
   </tr>
       <tr>
     <td align="center">김기연</td>
     <td align="center">조원</td>
-    <th align="center">Land Attack, ARP spoofing, Packet Over-Averaging Detection</th>
+    <th align="center">Land Attack * ARP spoofing * Packet Over-Averaging Detection</th>
   </tr>
   <tr>
     <td align="center">이근희</td>
     <td align="center">조원</td>
-    <th align="center">Banner Grap</th>
+    <th align="center"></th>
   </tr>
   <tr>
     <td align="center">김문정</td>
     <td align="center">조원</td>
-    <th align="center">FIN, ACK Scanner</th>
+    <th align="center"></th>
   </tr>
     <tr>
     <td align="center">조인철</td>
     <td align="center">조원</td>
-    <th align="center">XMAS Scanner</th>
+    <th align="center"></th>
   </tr>
 </table>
+
+<br>
+
+# 파이썬 코드를 활용한 패킷 캡처 및 분석 시스템 개발
