@@ -76,7 +76,6 @@
      - 네트워크 트래픽을 실시간으로 캡처하여 분석합니다
   2. 패킷을 이용한 공격 탐지 목록
      - melicious domain
-     - SQL injection
      - land attack
      - ARP spoofing
      - scaaner
